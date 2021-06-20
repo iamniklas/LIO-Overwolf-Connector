@@ -10,7 +10,7 @@
     "icon_gray": "IconMouseNormal.png",
     "launcher_icon": "desktop-icon.ico",
     "window_icon": "TaskbarIcon.png",
-    "description": "Sample app for new developers"
+    "description": "LIO Connector"
   },
   "permissions": [
     "Hotkeys",
@@ -23,13 +23,13 @@
   "data": {
     "game_targeting": {
       "type": "dedicated",
-      "game_ids": [10798]
+      "game_ids": [10798, 8032, 7764, 5426, 10844, 7212, 10826, 21668, 21640, 6365]
     },
     "launch_events": [
       {
         "event": "GameLaunch",
         "event_data": {
-          "game_ids": [10798]
+          "game_ids": [10798, 8032, 7764, 5426, 10844, 7212, 10826, 21668, 21640, 6365]
         },
         "start_minimized": true
       }
@@ -41,7 +41,7 @@
         "default": "Ctrl+F"
       }
     },
-    "game_events": [10798],
+    "game_events": [10798, 8032, 7764, 5426, 10844, 7212, 10826, 21668, 21640, 6365],
     "start_window": "background",
     "windows": {
       "background": {

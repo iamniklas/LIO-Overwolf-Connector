@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="../../css/header.css" />
     <link rel="stylesheet" href="../../css/desktop.css" />
     <link rel="stylesheet" href="../../css/modal.css" />
-    <title>Overwolf Sample App - Desktop page</title>
+    <title>LIO Connect Overwolf</title>
   </head>
   <body class="desktop">
     <!-- -------------------------------- Header ------------------------------- -->
 
     <header class="app-header">
       <img src="../../img/header_icon.svg" />
-      <h1>Sample App / desktop window 1337</h1>
+      <h1>LIO Connect Overwolf</h1>
       <div class="window-controls-group">
         <button class="icon window-control" id="minimizeButton">
           <svg>
@@ -33,38 +33,44 @@
 
     <!-- --------------------------------- Main -------------------------------- -->
     <main>
-      <div class="desktopTop">
-        <h1>Overwolf Sample App</h1>
-        <p>
-          Welcome to the Overwolf tutorial app for developers.<br />
-          Learn how to build an app by using one!
-        </p>
-        <div id="version"></div>
-      </div>
       <div class="desktopBottom">
-        <!-- Launch Rocket League! -->
         <div id="left">
           <h1>
-            Launch Rocket League,and the In-Game window will pop-up automatically!
+            Launch a supported game,and the In-Game window will pop-up automatically!
           </h1>
         </div>
-        <!-- Launch Rocket League! -->
         <div id="middle">
-          What can you learn with this sample app?
-          <br /><br />
-          1. How to listen to real-time game events and how to identify specific
-          events like start/end match, kill, and death.
-          <br /><br />
-          2. How to use a transparent background window as a service bus, that
-          acts as the main controller of your app.
-          <br /><br />
-          3. How to use Hotkeys that show/hide your app while you are in-game.
+          Supported Games:
+          <br>
+          - CS:GO
+          <br>
+          - League of Legends
+          <br>
+          - Minecraft
+          <br>
+          - Fortnite
+          <br>
+          - Rainbow Six Siege
+          <br>
+          - Hearthstone
+          <br>
+          - Overwatch
+          <br>
+          - Path of Exile
+          <br>
+          - Rocket League
+          <br>
+          - Valheim
+          <br>
+          - Valorant
         </div>
         <!-- picture -->
         <div id="right">
           <div style="text-align: center">
             <div style="display: inline-block">
-              <img src="../../img/cool_wolf.png" />
+              <p id="gameinfo">The Game ID:</p>
+              <button onclick="sendTestCall()">Test</button>
+              <!--<img src="../../img/cool_wolf.png" />-->
             </div>
           </div>
         </div>
@@ -80,6 +86,34 @@
       }, function(error) {
         console.log(`[INIT] failed to load desktop module ${error}`);
       });
+
+      window.onload = (event) => {
+        fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":100,\"G\":100,\"B\":100}, \"COLOR_SECONDARY\":{\"R\":100,\"G\":100,\"B\":100}, \"DURATION\": 0.75}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
+
+        console.log('page is fully loaded');
+      };
+
+      function getGameInfo() {
+        overwolf.games.getRunningGameInfo(function(){console.log(JSON.stringify(arguments))});
+      }
+
+      function sendTestCall() {
+        fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60&event_type=teamGoal&color=255%20255%20255",
+        {
+          method: 'POST',
+          body: "Rainbow:{\"mBundle\":{\"COLOR_SECONDARY\":{\"R\":0,\"G\":0,\"B\":0},\"COLOR_PRIMARY\":{\"R\":100,\"G\":0,\"B\":50}, \"DURATION\":40, \"REPETITIONS\": 0.75, \"SPEED\": 3.0, \"DIRECTION\": 3}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
+      }
     </script>
   </body>
 </html>

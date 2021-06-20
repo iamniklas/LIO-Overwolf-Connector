@@ -6,8 +6,14 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._eventsLog = document.getElementById("eventsLog");
       this._infoLog = document.getElementById("infoLog");
       this._copyEventsButton = document.getElementById("copyEvents");
+
+      this._testDemolishButton = document.getElementById("testdemolishbutton");
+      this._testBlueButton = document.getElementById("testbluebutton");
+      this._testOrangeButton = document.getElementById("testorangebutton");
+
       this._copyInfoButton = document.getElementById("copyInfo");
       this._hotkey = document.getElementById("hotkey");
+
 
       this.logEvent = this.logEvent.bind(this);
       this.logInfoUpdate = this.logInfoUpdate.bind(this);
@@ -15,8 +21,17 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._copyEventsLog = this._copyEventsLog.bind(this);
       this._copyInfoLog = this._copyInfoLog.bind(this);
 
+      this._onTestDemolishButtonClick = this._onTestDemolishButtonClick.bind(this);
+      this._onTestBlueButtonClick = this._onTestBlueButtonClick.bind(this);
+      this._onTestOrangeButtonClick = this._onTestOrangeButtonClick.bind(this);
+
+
       this._copyEventsButton.addEventListener("click", this._copyEventsLog);
       this._copyInfoButton.addEventListener("click", this._copyInfoLog);
+
+      this._testDemolishButton.addEventListener("click", this._onTestDemolishButtonClick);
+      this._testBlueButton.addEventListener("click", this._onTestBlueButtonClick);
+      this._testOrangeButton.addEventListener("click", this._onTestOrangeButtonClick);
     }
 
     // -- Public --
@@ -43,6 +58,27 @@ define(["../SampleAppView.js"], function(SampleAppView) {
 
     _copyInfoLog() {
       this._copyLog(this._infoLog);
+    }
+
+    _onTestDemolishButtonClick() {
+      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=action_points&event_data=Demolish&ip=192.168.178.60&color=50%2050%2050")
+      .then(response => {
+        this.inGameView.logEvent("Done", true);
+      });
+    }
+
+    _onTestBlueButtonClick() {
+      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=teamGoal&event_data=Demolish&ip=192.168.178.60&color=0 0 255")
+      .then(response => {
+        this.inGameView.logEvent("Done", true);
+      });
+    }
+
+    _onTestOrangeButtonClick() {
+      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=teamGoal&event_data=Demolish&ip=192.168.178.60&color=255 100 0")
+      .then(response => {
+        this.inGameView.logEvent("Done", true);
+      });
     }
 
     // Copy text from log

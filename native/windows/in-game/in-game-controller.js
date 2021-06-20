@@ -2,6 +2,11 @@ function fail(event) {
   console.log("Error");
 }
 
+// var gameMode = "";
+// var mapName = "";
+// var gameState = "";
+// var mi = new MatchInfo("m");
+
 define([
   '../../windows/in-game/in-game-view.js',
   '../../scripts/services/hotkeys-service.js'
@@ -25,6 +30,9 @@ define([
       // listen to events from the event bus from the main window,
       // the callback will be run in the context of the current window
       let mainWindow = overwolf.windows.getMainWindow();
+      let gameinfo = overwolf.games.getRunningGameInfo(function(){console.log(JSON.stringify(arguments))});
+      console.logEvent(gameinfo);
+
       mainWindow.ow_eventBus.addListener(this._eventListener);
 
       // Update hotkey view and listen to changes:
@@ -58,6 +66,7 @@ define([
         case 'death':
         case 'game_info':
         case 'matchStart':
+        case 'match_start':
         case 'match':
         case 'match_info':
         case 'roster':
@@ -68,23 +77,46 @@ define([
         case 'opposingTeamGoal':
           isHightlight = true;
       }
+      this._gameEventHandler.gameID = 12345;
+      
       this.inGameView.logEvent("Sending", true);
       
       var link = `http://000raspberry.ddns.net/overwolf/api?event_type=${event.name}`
       if(event.name == "action_points") {
           link += `&event_data=${event.data}`;
       }
+      link += '&ip=192.168.178.60'
+      if(event.name == "teamGoal" || event.name == "opposingTeamGoal") {
+          var data = JSON.parse(event.data);
+          var team = data.team;
+          var color = "";
+          switch(team) {
+              case "0": color = "128 128 128";
+                break;
+              case "1": color = "0 0 255";
+                break;
+              case "2": color = "255 100 0";
+                break;
+              default: color = "128 128 128";
+                break;
+          }
+          this.inGameView.logEvent(color, true);
+          link += `&color=${color}`;
+      }
+
+      this.inGameView.logEvent(link, true);
+
+      this.inGameView.logEvent(JSON.stringify(event), isHightlight);
+
       fetch(link)
       .then(response => {
         this.inGameView.logEvent("Done", true);
       });
-
-      this.inGameView.logEvent(JSON.stringify(event), isHightlight);
     }
 
-    // Logs info updates
+
     _infoUpdateHandler(infoUpdate) {
-      this.inGameView.logInfoUpdate(JSON.stringify(infoUpdate), false);
+      this.inGameView.logInfoUpdate(JSON.stringify(infoUpdate), true);
     }
   }
 

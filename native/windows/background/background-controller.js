@@ -118,6 +118,12 @@ define([
         console.log(JSON.stringify(event));
         window.ow_eventBus.trigger("event", event);
 
+        //http://000raspberry.ddns.net/lio/game?ip=192.168.178.60&event_type=teamGoal&color=255%20255%20255" -d "Rainbow:{\"mBundle\":{\"COLOR_SECONDARY\":{\"R\":0,\"G\":0,\"B\":0},\"COLOR_PRIMARY\":{\"R\":100,\"G\":0,\"B\":50}, \"DURATION\":40, \"REPETITIONS\": 0.75, \"SPEED\": 3.0}}
+        // fetch("http://000raspberry.ddns.net/overwolf/api?event_type=teamGoal&event_data=Demolish&ip=192.168.178.60&color=255%200%200")
+        // .then(response => {
+        //   this.inGameView.logEvent("Done", true);
+        // });
+
         if (event.name === "matchStart") {
           WindowsService.restore(WindowNames.IN_GAME);
         }

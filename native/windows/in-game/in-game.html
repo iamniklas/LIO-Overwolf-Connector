@@ -37,7 +37,6 @@
 
     <!-- --------------------------------- Main -------------------------------- -->
     <main>
-      <button class="logCopy" onclick="sig()">Hit event</button>
       <div id="logs">
         <div id="events" class="logColumn">
           <h1>Game Events</h1>
@@ -64,6 +63,12 @@
           are painted in <span style="color: #00DEFA">teal</span> and logged to
           the developers console.
         </p>
+        <label for="targetip" style="color: white;">Target Device IP</label>
+        <input id="targetip" type="text" placeholder="192.168.178.50" />
+        <div style="height: 20px;"></div>
+        <button id="testdemolishbutton" onclick="sig()">Test Demolish</button>
+        <button id="testbluebutton" onclick="sig()">Test Blue Goal</button>
+        <button id="testorangebutton" onclick="sig()">Test Orange Goal</button>
       </div>
     </main>
 
@@ -73,6 +78,7 @@
         console.log(`[INIT] in-game module loaded`);
         const inGameController = new InGameController();
         inGameController.run();
+        console.log('Hello there');
       }, function(error) {
         console.log(`[INIT] failed to load in-game module ${error}`);
       });
