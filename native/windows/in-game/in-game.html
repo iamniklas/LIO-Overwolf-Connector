@@ -57,14 +57,14 @@
       <div id="other">
         <h1>Real time Game Data</h1>
         <p id="infoParagraph">
-          This app is the in-game Controller. It listens to game events and sends communicates with the LED API.
+          This app is the in-game controller. It listens to game events and communicates with the LED API.
         </p>
 
         <div style="display: inline-block">
             <input id="input_leddeviceip" style="width: 100%; height: 40px" placeholder="LED IP (default 192.168.178.60)" />
-            <button style="height: 40px" onclick="storeIP()">Save Adress</button>
+            <button style="height: 40px" onclick="updateIP()">Save Adress</button>
           
-          <p style="color: white;" id="ipaddress_hint">Using IP: </p>
+            <p style="color: white;" id="ipaddress_hint">Using IP: </p>
         </div>
 
         <button id="testdemolishbutton">Test Demolish</button>
@@ -82,13 +82,12 @@
     <script>
       var deviceIP = "192.168.178.60";
       
-      function storeIP() {
-        updateIP();
-      }
-
       //Store IP 
       function updateIP() {
-        //deviceIP = document.getElementById("input_leddeviceip").value;
+        deviceIP = document.getElementById('input_leddeviceip').value;
+        if (deviceIP === '' || deviceIP == null) deviceIP = "192.168.178.60";
+
+
         document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
         
         InGameView.deviceIP = document.getElementById('ipaddress_hint').innerHTML;
