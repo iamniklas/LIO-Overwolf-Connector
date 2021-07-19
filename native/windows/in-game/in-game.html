@@ -61,22 +61,11 @@
         </p>
 
         <div style="display: inline-block">
-          <div>
-            <input id="input_leddeviceip" style="height: 40px" placeholder="LED Device IP" />
-            <button style="height: 40px" onclick="saveDeviceIP()">Save Adress</button>
-          </div>
+            <input id="input_leddeviceip" style="width: 100%; height: 40px" placeholder="LED IP (default 192.168.178.60)" />
+            <button style="height: 40px" onclick="storeIP()">Save Adress</button>
           
-          <p></p>
-          <p id="ipaddress_hint">Using IP: </p>
-          
-          <button style="width: 100%; height: 40px;" onclick="runRainbowProcedure()">Rainbow</button>
-          <div style="height: 10px;"></div>
-          <button style="width: 100%; height: 40px;" onclick="runColorWhiteInstantProcedure()">White</button>
+          <p style="color: white;" id="ipaddress_hint">Using IP: </p>
         </div>
-
-        <label for="targetip" style="color: white;">Target Device IP</label>
-        <input id="targetip" type="text" placeholder="192.168.178.60" />
-        <div style="height: 20px;"></div>
 
         <button id="testdemolishbutton">Test Demolish</button>
         <div style="height: 5px;"></div>
@@ -89,6 +78,26 @@
         <button id="testepicsavebutton">Test Epic Save</button>
       </div>
     </main>
+
+    <script>
+      var deviceIP = "192.168.178.60";
+      
+      function storeIP() {
+        updateIP();
+      }
+
+      //Store IP 
+      function updateIP() {
+        //deviceIP = document.getElementById("input_leddeviceip").value;
+        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
+        
+        InGameView.deviceIP = document.getElementById('ipaddress_hint').innerHTML;
+      }
+
+      window.onload = (event) => {
+        updateIP();
+      };
+    </script>
 
     <script src="../../lib/require.js"></script>
     <script>

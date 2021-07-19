@@ -9,6 +9,8 @@ function fail(event) {
 
 class Configuration {
   static deviceIP = "";
+
+  
 }
 
 define([

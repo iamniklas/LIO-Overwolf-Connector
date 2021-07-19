@@ -1,9 +1,9 @@
 define(["../SampleAppView.js"], function(SampleAppView) {
   class InGameView extends SampleAppView {
+    static deviceIP = "192.168.178.60";
+
     constructor() {
       super();
-
-      this.deviceIP = "192.168.178.60";
 
       this._eventsLog = document.getElementById("eventsLog");
       this._infoLog = document.getElementById("infoLog");
@@ -70,7 +70,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestDemolishButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 0, \"B\": 0}, \"DURATION\": 75, \"MODULO\": 7}}"
@@ -78,7 +78,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestBlueButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
@@ -86,7 +86,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestOrangeButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
@@ -94,7 +94,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestSaveButtonClick() {
-      var ip = `http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`;
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
       fetch(ip,
         {
           method: 'POST',
@@ -112,7 +112,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestEpicSaveButtonClick() {
-      var ip = `http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`;
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
       fetch(ip,
         {
           method: 'POST',
