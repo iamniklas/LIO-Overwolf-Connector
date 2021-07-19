@@ -81,7 +81,37 @@ define([
       
       this.inGameView.logEvent("Sending", true);
       
-      var link = `http://000raspberry.ddns.net/overwolf/api?event_type=${event.name}`
+      var link = "http://000raspberry.ddns.net/lio/game?ip=192.168.178.60"
+      
+      switch(event.name) {
+        case 'gep_internal':
+          break;
+        case 'death':
+          break;
+        case 'game_info':
+          break;
+        case 'matchStart':
+          break;
+        case 'match_start':
+          break;
+        case 'match':
+          break;
+        case 'match_info':
+          break;
+        case 'roster':
+          break;
+        case 'me':
+          break;
+        case 'matchEnd':
+          break;
+        case 'stats':
+          break;
+        case 'teamGoal':
+          break;
+        case 'opposingTeamGoal':
+          break;
+      }
+
       if(event.name == "action_points") {
           link += `&event_data=${event.data}`;
       }
@@ -114,12 +144,10 @@ define([
       });
     }
 
-
     _infoUpdateHandler(infoUpdate) {
       this.inGameView.logInfoUpdate(JSON.stringify(infoUpdate), true);
     }
   }
-
 
   return InGameController;
 });

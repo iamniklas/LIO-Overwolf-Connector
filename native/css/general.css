@@ -9,6 +9,12 @@ h2 {
 button {
   padding: 0;
   border: none;
+  transition: 0.25s;
+}
+
+button:hover {
+  transition: 0.25s;
+  background-color: #03A9F4;
 }
 
 button:focus {

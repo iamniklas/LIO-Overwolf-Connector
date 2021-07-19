@@ -36,40 +36,27 @@
       <div class="desktopBottom">
         <div id="left">
           <h1>
-            Launch a supported game,and the In-Game window will pop-up automatically!
+            Rocket League LIO Connector Example  
           </h1>
         </div>
         <div id="middle">
-          Supported Games:
-          <br>
-          - CS:GO
-          <br>
-          - League of Legends
-          <br>
-          - Minecraft
-          <br>
-          - Fortnite
-          <br>
-          - Rainbow Six Siege
-          <br>
-          - Hearthstone
-          <br>
-          - Overwatch
-          <br>
-          - Path of Exile
-          <br>
-          - Rocket League
-          <br>
-          - Valheim
-          <br>
-          - Valorant
+          Launch the game, and the In-Game window will pop-up automatically!
         </div>
         <!-- picture -->
         <div id="right">
           <div style="text-align: center">
             <div style="display: inline-block">
-              <p id="gameinfo">The Game ID:</p>
-              <button onclick="sendTestCall()">Test</button>
+              <div>
+                <input id="input_leddeviceip" style="height: 40px" placeholder="LED Device IP" />
+                <button style="height: 40px" onclick="saveDeviceIP()">Save Adress</button>
+              </div>
+              
+              <p></p>
+              <p id="ipaddress_hint">Using IP: </p>
+              
+              <button style="width: 100%; height: 40px;" onclick="runRainbowProcedure()">Rainbow</button>
+              <div style="height: 10px;"></div>
+              <button style="width: 100%; height: 40px;" onclick="runColorWhiteInstantProcedure()">White</button>
               <!--<img src="../../img/cool_wolf.png" />-->
             </div>
           </div>
@@ -79,6 +66,9 @@
 
     <script src="../../lib/require.js"></script>
     <script>
+      var inputFieldIp;
+      var deviceIP = "192.168.178.60";
+
       require(["desktop-controller"], function(DesktopController) {
         console.log(`[INIT] desktop module loaded`);
         const desktopCntroller = new DesktopController();
@@ -87,32 +77,49 @@
         console.log(`[INIT] failed to load desktop module ${error}`);
       });
 
+      //Window On Load
       window.onload = (event) => {
-        fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        const r = Math.floor(Math.random() * 128);
+        const g = Math.floor(Math.random() * 128);
+        const b = Math.floor(Math.random() * 128);
+
+        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
-          body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":100,\"G\":100,\"B\":100}, \"COLOR_SECONDARY\":{\"R\":100,\"G\":100,\"B\":100}, \"DURATION\": 0.75}}"
+          body: `ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": ${r}, \"G\": ${g}, \"B\": ${b}}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}`
         })
-        .then(response => {
-          this.inGameView.logEvent("Done", true);
-        });
+        inputFieldIp = document.getElementById('input_leddeviceip');
+        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
 
         console.log('page is fully loaded');
       };
 
-      function getGameInfo() {
-        overwolf.games.getRunningGameInfo(function(){console.log(JSON.stringify(arguments))});
-      }
-
-      function sendTestCall() {
-        fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60&event_type=teamGoal&color=255%20255%20255",
+      //Function for test button
+      function runRainbowProcedure() {
+        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
-          body: "Rainbow:{\"mBundle\":{\"COLOR_SECONDARY\":{\"R\":0,\"G\":0,\"B\":0},\"COLOR_PRIMARY\":{\"R\":100,\"G\":0,\"B\":50}, \"DURATION\":40, \"REPETITIONS\": 0.75, \"SPEED\": 3.0, \"DIRECTION\": 3}}"
+          body: "Rainbow:{\"mBundle\":{\"REPETITIONS\": 1.2, \"SPEED\": 3, \"DIRECTION\": 0, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": false}}"
         })
         .then(response => {
           this.inGameView.logEvent("Done", true);
         });
+      }
+      function runColorWhiteInstantProcedure() {
+        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        {
+          method: 'POST',
+          body: "ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 100, \"G\": 100, \"B\": 100}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
+      }
+
+      //Store IP 
+      function saveDeviceIP() {
+        deviceIP = document.getElementById("input_leddeviceip").value;
+        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
       }
     </script>
   </body>
