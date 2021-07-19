@@ -78,7 +78,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestBlueButtonClick() {
-      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
@@ -86,7 +86,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestOrangeButtonClick() {
-      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
@@ -94,14 +94,15 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestSaveButtonClick() {
-      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`;
+      fetch(ip,
         {
           method: 'POST',
           body: "Fill:{\"mBundle\":{\"SPEED\": 5, \"COLOR_PRIMARY\": {\"R\": 255, \"G\": 255, \"B\": 255}, \"PU_MODULO\": 2, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 2}}"
         })
         .then(
           setTimeout(function(){
-              fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+              fetch(ip,
               {
                 method: 'POST',
                 body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
@@ -111,14 +112,15 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestEpicSaveButtonClick() {
-      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`;
+      fetch(ip,
         {
           method: 'POST',
-          body: "Fill:{\"mBundle\":{\"SPEED\": 5, \"COLOR_PRIMARY\": {\"R\": 128, \"G\": 128, \"B\": 128}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 3}}"
+          body: "Fill:{\"mBundle\":{\"SPEED\": 10, \"COLOR_PRIMARY\": {\"R\": 128, \"G\": 128, \"B\": 128}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 3}}"
         })
         .then(
           setTimeout(function(){
-              fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+              fetch(ip,
               {
                 method: 'POST',
                 body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
