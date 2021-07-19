@@ -7,6 +7,10 @@ function fail(event) {
 // var gameState = "";
 // var mi = new MatchInfo("m");
 
+class Configuration {
+  static deviceIP = "";
+}
+
 define([
   '../../windows/in-game/in-game-view.js',
   '../../scripts/services/hotkeys-service.js'
@@ -137,6 +141,12 @@ define([
       this.inGameView.logEvent(link, true);
 
       this.inGameView.logEvent(JSON.stringify(event), isHightlight);
+
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        {
+          method: 'POST',
+          body: `ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": ${r}, \"G\": ${g}, \"B\": ${b}}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}`
+        })
 
       fetch(link)
       .then(response => {

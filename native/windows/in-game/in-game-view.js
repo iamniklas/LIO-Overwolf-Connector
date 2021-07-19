@@ -3,6 +3,8 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     constructor() {
       super();
 
+      this.deviceIP = "192.168.178.60";
+
       this._eventsLog = document.getElementById("eventsLog");
       this._infoLog = document.getElementById("infoLog");
       this._copyEventsButton = document.getElementById("copyEvents");
@@ -15,6 +17,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._hotkey = document.getElementById("hotkey");
 
 
+      /***********************************************************************/
       this.logEvent = this.logEvent.bind(this);
       this.logInfoUpdate = this.logInfoUpdate.bind(this);
       this.updateHotkey = this.updateHotkey.bind(this);
@@ -61,24 +64,36 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestDemolishButtonClick() {
-      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=action_points&event_data=Demolish&ip=192.168.178.60&color=50%2050%2050")
-      .then(response => {
-        this.inGameView.logEvent("Done", true);
-      });
+      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 0, \"B\": 0}, \"DURATION\": 75, \"MODULO\": 7}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
     }
 
     _onTestBlueButtonClick() {
-      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=teamGoal&event_data=Demolish&ip=192.168.178.60&color=0 0 255")
-      .then(response => {
-        this.inGameView.logEvent("Done", true);
-      });
+      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
     }
 
     _onTestOrangeButtonClick() {
-      fetch("http://000raspberry.ddns.net/overwolf/api?event_type=teamGoal&event_data=Demolish&ip=192.168.178.60&color=255 100 0")
-      .then(response => {
-        this.inGameView.logEvent("Done", true);
-      });
+      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
+        })
+        .then(response => {
+          this.inGameView.logEvent("Done", true);
+        });
     }
 
     // Copy text from log

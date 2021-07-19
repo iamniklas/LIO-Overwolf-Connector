@@ -57,18 +57,32 @@
       <div id="other">
         <h1>Real time Game Data</h1>
         <p id="infoParagraph">
-          The background controller of this app is listening to all the game
-          events and info updates, and sends them to this window, that prints
-          them to the screen. Some specific events (startMatch, Kill and Death)
-          are painted in <span style="color: #00DEFA">teal</span> and logged to
-          the developers console.
+          This app is the in-game Controller. It listens to game events and sends communicates with the LED API.
         </p>
+
+        <div style="display: inline-block">
+          <div>
+            <input id="input_leddeviceip" style="height: 40px" placeholder="LED Device IP" />
+            <button style="height: 40px" onclick="saveDeviceIP()">Save Adress</button>
+          </div>
+          
+          <p></p>
+          <p id="ipaddress_hint">Using IP: </p>
+          
+          <button style="width: 100%; height: 40px;" onclick="runRainbowProcedure()">Rainbow</button>
+          <div style="height: 10px;"></div>
+          <button style="width: 100%; height: 40px;" onclick="runColorWhiteInstantProcedure()">White</button>
+        </div>
+
         <label for="targetip" style="color: white;">Target Device IP</label>
-        <input id="targetip" type="text" placeholder="192.168.178.50" />
+        <input id="targetip" type="text" placeholder="192.168.178.60" />
         <div style="height: 20px;"></div>
-        <button id="testdemolishbutton" onclick="sig()">Test Demolish</button>
-        <button id="testbluebutton" onclick="sig()">Test Blue Goal</button>
-        <button id="testorangebutton" onclick="sig()">Test Orange Goal</button>
+
+        <button id="testdemolishbutton">Test Demolish</button>
+        <div style="height: 5px;"></div>
+        <button id="testbluebutton">Test Blue Goal</button>
+        <div style="height: 5px;"></div>
+        <button id="testorangebutton">Test Orange Goal</button>
       </div>
     </main>
 
@@ -82,11 +96,6 @@
       }, function(error) {
         console.log(`[INIT] failed to load in-game module ${error}`);
       });
-    </script>
-    <script>
-      function sig() {
-        console.log('lol');
-      }
     </script>
   </body>
 </html>
