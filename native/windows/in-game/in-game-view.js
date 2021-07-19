@@ -12,6 +12,8 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._testDemolishButton = document.getElementById("testdemolishbutton");
       this._testBlueButton = document.getElementById("testbluebutton");
       this._testOrangeButton = document.getElementById("testorangebutton");
+      this._testSaveButton = document.getElementById("testsavebutton");
+      this._testEpicSaveButton = document.getElementById("testepicsavebutton");
 
       this._copyInfoButton = document.getElementById("copyInfo");
       this._hotkey = document.getElementById("hotkey");
@@ -27,7 +29,9 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._onTestDemolishButtonClick = this._onTestDemolishButtonClick.bind(this);
       this._onTestBlueButtonClick = this._onTestBlueButtonClick.bind(this);
       this._onTestOrangeButtonClick = this._onTestOrangeButtonClick.bind(this);
-
+      this._onTestSaveButtonClick = this._onTestSaveButtonClick.bind(this);
+      this._onTestEpicSaveButtonClick = this._onTestEpicSaveButtonClick.bind(this);
+      
 
       this._copyEventsButton.addEventListener("click", this._copyEventsLog);
       this._copyInfoButton.addEventListener("click", this._copyInfoLog);
@@ -35,6 +39,8 @@ define(["../SampleAppView.js"], function(SampleAppView) {
       this._testDemolishButton.addEventListener("click", this._onTestDemolishButtonClick);
       this._testBlueButton.addEventListener("click", this._onTestBlueButtonClick);
       this._testOrangeButton.addEventListener("click", this._onTestOrangeButtonClick);
+      this._testSaveButton.addEventListener("click", this._onTestSaveButtonClick);
+      this._testEpicSaveButton.addEventListener("click", this._onTestEpicSaveButtonClick);
     }
 
     // -- Public --
@@ -64,14 +70,11 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestDemolishButtonClick() {
-      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${this.deviceIP}`,
         {
           method: 'POST',
           body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 0, \"B\": 0}, \"DURATION\": 75, \"MODULO\": 7}}"
         })
-        .then(response => {
-          this.inGameView.logEvent("Done", true);
-        });
     }
 
     _onTestBlueButtonClick() {
@@ -80,9 +83,6 @@ define(["../SampleAppView.js"], function(SampleAppView) {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
         })
-        .then(response => {
-          this.inGameView.logEvent("Done", true);
-        });
     }
 
     _onTestOrangeButtonClick() {
@@ -91,9 +91,40 @@ define(["../SampleAppView.js"], function(SampleAppView) {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
         })
-        .then(response => {
-          this.inGameView.logEvent("Done", true);
-        });
+    }
+
+    _onTestSaveButtonClick() {
+      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "Fill:{\"mBundle\":{\"SPEED\": 5, \"COLOR_PRIMARY\": {\"R\": 255, \"G\": 255, \"B\": 255}, \"PU_MODULO\": 2, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 2}}"
+        })
+        .then(
+          setTimeout(function(){
+              fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+              {
+                method: 'POST',
+                body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
+              })
+            }, 1500)
+        );
+    }
+
+    _onTestEpicSaveButtonClick() {
+      fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+        {
+          method: 'POST',
+          body: "Fill:{\"mBundle\":{\"SPEED\": 5, \"COLOR_PRIMARY\": {\"R\": 128, \"G\": 128, \"B\": 128}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 3}}"
+        })
+        .then(
+          setTimeout(function(){
+              fetch("http://000raspberry.ddns.net/lio/game?ip=192.168.178.60",
+              {
+                method: 'POST',
+                body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
+              })
+            }, 1500)
+        );
     }
 
     // Copy text from log
