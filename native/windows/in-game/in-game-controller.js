@@ -8,9 +8,7 @@ function fail(event) {
 // var mi = new MatchInfo("m");
 
 class Configuration {
-  static deviceIP = "";
-
-  
+  static deviceIP = ""; 
 }
 
 define([
@@ -36,14 +34,14 @@ define([
       // listen to events from the event bus from the main window,
       // the callback will be run in the context of the current window
       let mainWindow = overwolf.windows.getMainWindow();
-      let gameinfo = overwolf.games.getRunningGameInfo(function(){console.log(JSON.stringify(arguments))});
-      console.logEvent(gameinfo);
 
       mainWindow.ow_eventBus.addListener(this._eventListener);
 
       // Update hotkey view and listen to changes:
       this._updateHotkey();
       HotkeysService.addHotkeyChangeListener(this._updateHotkey);
+
+      this.runTeamBlueGoalProcedure();
     }
 
     async _updateHotkey() {
@@ -64,35 +62,82 @@ define([
       }
     }
 
+    runDemolishProcedure() {
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        {
+          method: 'POST',
+          body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 0, \"B\": 0}, \"DURATION\": 75, \"MODULO\": 7}}"
+        })
+    }
+
+    runTeamBlueGoalProcedure() {
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        {
+          method: 'POST',
+          body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
+        })
+    }
+
+    runTeamOrangeGoalProcedure() {
+      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        {
+          method: 'POST',
+          body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
+        })
+    }
+
+    runSaveProcedure() {
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      fetch(ip,
+        {
+          method: 'POST',
+          body: "Fill:{\"mBundle\":{\"SPEED\": 5, \"COLOR_PRIMARY\": {\"R\": 255, \"G\": 255, \"B\": 255}, \"PU_MODULO\": 2, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 2}}"
+        })
+        .then(
+          setTimeout(function(){
+              fetch(ip,
+              {
+                method: 'POST',
+                body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
+              })
+            }, 1500)
+        );
+    }
+
+    runEpicSaveProcedure() {
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      fetch(ip,
+        {
+          method: 'POST',
+          body: "Fill:{\"mBundle\":{\"SPEED\": 10, \"COLOR_PRIMARY\": {\"R\": 128, \"G\": 128, \"B\": 128}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true, \"IS_SUB_PROCEDURE\": false, \"DIRECTION\": 3}}"
+        })
+        .then(
+          setTimeout(function(){
+              fetch(ip,
+              {
+                method: 'POST',
+                body: "FadeToMultiColor:{\"mBundle\":{\"COLOR_PRIMARY\":{\"R\":0,\"G\":0,\"B\":0}, \"DURATION\": 0.25, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
+              })
+            }, 1500)
+        );
+    }
+
     // Logs events
     _gameEventHandler(event) {
-      let isHightlight = false;
-      switch (event.name) {
-        case 'gep_internal':
-        case 'death':
-        case 'game_info':
-        case 'matchStart':
-        case 'match_start':
-        case 'match':
-        case 'match_info':
-        case 'roster':
-        case 'me':
-        case 'matchEnd':
-        case 'stats':
-        case 'teamGoal':
-        case 'opposingTeamGoal':
-          isHightlight = true;
+      //Show game event in console, 
+      //additional info if event name is action_points
+      this.inGameView.logEvent(event.name, true);
+      if(event.name === "action_points") {
+        this.inGameView.logEvent(event.data, true);
       }
-      this._gameEventHandler.gameID = 12345;
-      
-      this.inGameView.logEvent("Sending", true);
-      
-      var link = "http://000raspberry.ddns.net/lio/game?ip=192.168.178.60"
-      
+      this.inGameView.logEvent("Sending", false);
+
       switch(event.name) {
         case 'gep_internal':
           break;
         case 'death':
+          //Event triggered if own car gets destroyed
+          this.runDemolishProcedure();
           break;
         case 'game_info':
           break;
@@ -109,51 +154,43 @@ define([
         case 'me':
           break;
         case 'matchEnd':
+          this.runEpicSaveProcedure();
           break;
         case 'stats':
           break;
+          //Goal events
         case 'teamGoal':
           break;
         case 'opposingTeamGoal':
           break;
-      }
-
-      if(event.name == "action_points") {
-          link += `&event_data=${event.data}`;
-      }
-      link += '&ip=192.168.178.60'
-      if(event.name == "teamGoal" || event.name == "opposingTeamGoal") {
-          var data = JSON.parse(event.data);
-          var team = data.team;
-          var color = "";
-          switch(team) {
-              case "0": color = "128 128 128";
-                break;
-              case "1": color = "0 0 255";
-                break;
-              case "2": color = "255 100 0";
-                break;
-              default: color = "128 128 128";
-                break;
+        case 'action_points':
+          switch(event.data) {
+            case "Shot On Goal":
+              break;
+            case "Goal":
+              break;
+            case "First Touch":
+              break;
+            case "Center Ball":
+              break;
+            case "Pool Shot":
+              break;
+            case "Assist":
+              break;
+            case "Clear Goal":
+              break;
+            case "Demolish":
+              break;
+              //Both events called if player gets points for saving the ball
+            case "Save":
+              this.runSaveProcedure();
+              break;
+            case "Epic Save":
+              this.runEpicSaveProcedure();
+              break;
           }
-          this.inGameView.logEvent(color, true);
-          link += `&color=${color}`;
+          break;
       }
-
-      this.inGameView.logEvent(link, true);
-
-      this.inGameView.logEvent(JSON.stringify(event), isHightlight);
-
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
-        {
-          method: 'POST',
-          body: `ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": ${r}, \"G\": ${g}, \"B\": ${b}}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}`
-        })
-
-      fetch(link)
-      .then(response => {
-        this.inGameView.logEvent("Done", true);
-      });
     }
 
     _infoUpdateHandler(infoUpdate) {
