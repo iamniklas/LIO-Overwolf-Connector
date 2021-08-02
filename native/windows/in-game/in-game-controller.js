@@ -40,8 +40,6 @@ define([
       // Update hotkey view and listen to changes:
       this._updateHotkey();
       HotkeysService.addHotkeyChangeListener(this._updateHotkey);
-
-      this.runTeamBlueGoalProcedure();
     }
 
     async _updateHotkey() {
@@ -122,6 +120,21 @@ define([
         );
     }
 
+    runCountdownProcedure() {
+      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      var repetitions = 4;
+      for(var i=0; i < repetitions; i++) {
+        setTimeout(function() {
+          fetch(ip,
+            {
+              method: 'POST',
+              body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 128, \"G\": 128, \"B\": 128}, \"DURATION\": 2, \"MODULO\": 1}}"
+            }
+          );
+        }, 1000 * i);
+      }
+    }
+
     // Logs events
     _gameEventHandler(event) {
       //Show game event in console, 
@@ -160,8 +173,15 @@ define([
           break;
           //Goal events
         case 'teamGoal':
-          break;
         case 'opposingTeamGoal':
+          var dataObj = JSON.parse(event.data);
+          this.inGameView.logEvent(dataObj.team, true);
+          if(dataObj.team === "1") {
+            this.runTeamBlueGoalProcedure();
+          }
+          if(dataObj.team === "2") {
+            this.runTeamOrangeGoalProcedure();
+          }
           break;
         case 'action_points':
           switch(event.data) {
@@ -180,6 +200,7 @@ define([
             case "Clear Goal":
               break;
             case "Demolish":
+              this.runDemolishProcedure();
               break;
               //Both events called if player gets points for saving the ball
             case "Save":
@@ -195,6 +216,10 @@ define([
 
     _infoUpdateHandler(infoUpdate) {
       this.inGameView.logInfoUpdate(JSON.stringify(infoUpdate), true);
+
+      if(JSON.stringify(infoUpdate).includes("Countdown")) {
+        this.runCountdownProcedure();
+      }
     }
   }
 
