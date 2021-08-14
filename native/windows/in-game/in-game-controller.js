@@ -143,7 +143,6 @@ define([
       if(event.name === "action_points") {
         this.inGameView.logEvent(event.data, true);
       }
-      this.inGameView.logEvent("Sending", false);
 
       switch(event.name) {
         case 'gep_internal':

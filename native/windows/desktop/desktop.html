@@ -46,12 +46,18 @@
           <div style="text-align: center">
             <div style="display: inline-block">
               <div>
-                <input id="input_leddeviceip" style="height: 40px" placeholder="LED Device IP" />
-                <button style="height: 40px" onclick="saveDeviceIP()">Save Adress</button>
+                <input id="input_leddeviceip" style="height: 20px" placeholder="LED Device IP" />
+                <button style="width: 40%; height: 20px" onclick="saveDeviceIP()">Save IP Adress</button>
+              </div>
+              <div style="height: 15px;"></div>
+              <div>
+                <input id="input_apiip" style="height: 20px" placeholder="API IP" />
+                <button style="width: 40%; height: 20px" onclick="saveApiAdress()">Save API Adress</button>
               </div>
               
               <p></p>
-              <p style="color: white;" id="ipaddress_hint">Using IP: </p>
+              <p style="color: white;" id="ipaddress_hint">Device Adress: </p>
+              <p style="color: white;" id="apiaddress_hint">API Adress: </p>
               
               <button style="width: 100%; height: 40px;" onclick="runRainbowProcedure()">Rainbow</button>
               <div style="height: 10px;"></div>
@@ -66,6 +72,7 @@
     <script>
       var inputFieldIp;
       var deviceIP = "192.168.178.60";
+      var apiAdress = "http://000raspberry.ddns.net";
 
       require(["desktop-controller"], function(DesktopController) {
         console.log(`[INIT] desktop module loaded`);
@@ -81,20 +88,23 @@
         const g = Math.floor(Math.random() * 128);
         const b = Math.floor(Math.random() * 128);
 
-        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: `ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": ${r}, \"G\": ${g}, \"B\": ${b}}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}`
         })
-        inputFieldIp = document.getElementById('input_leddeviceip');
-        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
 
+        document.getElementById('input_leddeviceip').value = deviceIP;
+        document.getElementById('input_apiip').value = apiAdress;
+        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
+        document.getElementById('apiaddress_hint').innerHTML = `API Adress: ${apiAdress}`;
+        
         console.log('page is fully loaded');
       };
 
       //Function for test button
       function runRainbowProcedure() {
-        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "Rainbow:{\"mBundle\":{\"REPETITIONS\": 1.2, \"SPEED\": 3, \"DIRECTION\": 0, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": false}}"
@@ -104,7 +114,7 @@
         });
       }
       function runColorWhiteInstantProcedure() {
-        fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+        fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "ColorInstantSet:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 100, \"G\": 100, \"B\": 100}, \"PU_MODULO\": 1, \"PU_MODULO_INVERT\": true}}"
@@ -118,6 +128,12 @@
       function saveDeviceIP() {
         deviceIP = document.getElementById("input_leddeviceip").value;
         document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
+      }
+
+      //Store API Adress
+      function saveApiAdress() {
+        apiAdress = document.getElementById("input_apiip").value;
+        document.getElementById('apiaddress_hint').innerHTML = `API Adress: ${apiAdress}`;
       }
     </script>
   </body>

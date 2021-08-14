@@ -1,6 +1,7 @@
 define(["../SampleAppView.js"], function(SampleAppView) {
   class InGameView extends SampleAppView {
     static deviceIP = "192.168.178.60";
+    static apiAdress = "http://000raspberry.ddns.net";
 
     constructor() {
       super();
@@ -70,7 +71,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestDemolishButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+      fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "Blink:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 0, \"B\": 0}, \"DURATION\": 75, \"MODULO\": 7}}"
@@ -78,7 +79,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestBlueButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+      fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 0, \"G\": 0, \"B\": 255}}}"
@@ -86,7 +87,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestOrangeButtonClick() {
-      fetch(`http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`,
+      fetch(`${apiAdress}/lio/game?ip=${deviceIP}`,
         {
           method: 'POST',
           body: "FadeInFadeOut:{\"mBundle\":{\"COLOR_PRIMARY\": {\"R\": 255, \"G\": 100, \"B\": 0}}}"
@@ -94,7 +95,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestSaveButtonClick() {
-      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      var ip = `${apiAdress}/lio/game?ip=${deviceIP}`;
       fetch(ip,
         {
           method: 'POST',
@@ -112,7 +113,7 @@ define(["../SampleAppView.js"], function(SampleAppView) {
     }
 
     _onTestEpicSaveButtonClick() {
-      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      var ip = `${apiAdress}/lio/game?ip=${deviceIP}`;
       fetch(ip,
         {
           method: 'POST',

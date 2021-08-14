@@ -85,16 +85,25 @@
       //Store IP 
       function updateIP() {
         deviceIP = document.getElementById('input_leddeviceip').value;
-        if (deviceIP === '' || deviceIP == null) deviceIP = "192.168.178.60";
-
+        if (deviceIP) deviceIP = "192.168.178.60";
 
         document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${deviceIP}`;
         
         InGameView.deviceIP = document.getElementById('ipaddress_hint').innerHTML;
       }
 
+      function updateApiAdress() {
+        apiAdress = document.getElementById('input_leddeviceip').value;
+        if (apiAdress) apiAdress = "192.168.178.60";
+
+        document.getElementById('ipaddress_hint').innerHTML = `Using IP: ${apiAdress}`;
+        
+        InGameView.apiAdress = document.getElementById('ipaddress_hint').innerHTML;
+      }
+
       window.onload = (event) => {
         updateIP();
+        updateApiAdress();
       };
     </script>
 
