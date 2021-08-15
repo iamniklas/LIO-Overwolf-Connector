@@ -8,7 +8,8 @@ function fail(event) {
 // var mi = new MatchInfo("m");
 
 class Configuration {
-  static deviceIP = ""; 
+  static apiAdress = "http://000raspberry.ddns.net";
+  static deviceIP = "192.168.178.60"; 
 }
 
 define([
@@ -121,7 +122,7 @@ define([
     }
 
     runCountdownProcedure() {
-      var ip = `http://000raspberry.ddns.net/lio/game?ip=${deviceIP}`;
+      var ip = `${apiAdress}/lio/game?ip=${deviceIP}`;
       var repetitions = 4;
       for(var i=0; i < repetitions; i++) {
         setTimeout(function() {
